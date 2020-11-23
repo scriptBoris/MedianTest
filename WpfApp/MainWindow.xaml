@@ -40,9 +40,17 @@
                             <Label>Обзор</Label>
                         </Button>
                         
-                        <TextBox x:Name="inputFilePath"/>
+                        <TextBox x:Name="inputFilePath"
+                                 VerticalContentAlignment="Center" />
                     </DockPanel>
-                    
+
+
+                    <Label>Ширина окна фильтра</Label>
+                    <TextBox x:Name="inputWindowSize"
+                             VerticalContentAlignment="Center"
+                             Text="5"
+                             Height="30"/>
+
                     <Button Click="ObButtonReadFile" Margin="0,4,0,0">
                         <Label>Прочитать</Label>
                     </Button>

@@ -8,27 +8,33 @@ namespace WpfApp
     public class Filter
     {
         private int centrWindow;
-        private int window;
-        private int step;
+        private int windowSize;
+        private long step;
         private List<float> buffer = new List<float>();
-        public Filter(int window)
+        public Filter(int windowSize)
         {
-            this.window = window;
-            centrWindow = window / 2;
-            step = -window;
+            if (windowSize < 3 || windowSize > 1000001)
+                throw new Exception("Ширина окна медианного фильтра должно быть в диапазоне от 3 до 1000001");
+
+            if (windowSize % 2 == 0)
+                throw new Exception("Ширина окна медианного фильтра должно быть нечетным");
+
+            this.windowSize = windowSize;
+            centrWindow = windowSize / 2;
+            step = -windowSize;
         }
 
         public float? TryFilter(float num)
         {
             float? res = null;
             buffer.Add(num);
-            if (buffer.Count > window)
+            if (buffer.Count > windowSize)
                 buffer.RemoveAt(0);
 
             if (step >= 0)
             {
-                float[] windowArray = new float[window];
-                for (int i = 0; i < window; i++)
+                float[] windowArray = new float[windowSize];
+                for (int i = 0; i < windowSize; i++)
                     windowArray[i] = buffer[i];
 
                 res = FilterWindow(windowArray);
@@ -56,7 +62,7 @@ namespace WpfApp
         {
             var list = new List<float>();
 
-            for (int i = 0; i < window; i++)
+            for (int i = 0; i < windowSize; i++)
             {
                 float? res = TryFilter(buffer.LastOrDefault());
                 if (res.HasValue)

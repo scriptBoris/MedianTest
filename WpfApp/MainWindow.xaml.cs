@@ -34,6 +34,25 @@ namespace WpfApp
 
         private async void ObButtonReadFile(object sender, RoutedEventArgs e)
         {
+            int window = 0;
+            if (!int.TryParse(inputWindowSize.Text, out window))
+            {
+                MessageBox.Show($"Значение ширины окна фильтра должно быть числом", "Ошибка");
+                return;
+            }
+
+            Filter filter = null;
+
+            try
+            {
+                filter = new Filter(window);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"{ex.Message}", "Ошибка");
+                return;
+            }
+
             worker.FilePath = inputFilePath.Text;
             loading.Visibility = Visibility.Visible;
             cancel = new CancellationTokenSource();
@@ -44,8 +63,6 @@ namespace WpfApp
 
             try
             {
-                int window = 5;
-                var filter = new Filter(window);
                 int count = 0;
                 await foreach (float num in worker.ReadFile(cancel.Token))
                 {
