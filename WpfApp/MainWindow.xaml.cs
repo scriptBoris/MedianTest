@@ -68,10 +68,10 @@ namespace WpfApp
             {
                 ConsoleWrite($"Чтение \"{worker.FilePath}\" отменено");
             }
-            //catch (Exception ex)
-            //{
-            //    MessageBox.Show($"{ex.Message}", "Ошибка");
-            //}
+            catch (Exception ex)
+            {
+                MessageBox.Show($"{ex.Message}", "Ошибка");
+            }
 
 
             loading.Visibility = Visibility.Hidden;
